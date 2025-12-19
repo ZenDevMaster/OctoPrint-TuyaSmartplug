@@ -54,6 +54,7 @@ $(function() {
 									'icon':ko.observable('icon-bolt'),
 									'displayWarning':ko.observable(true),
 									'v33':ko.observable(false),
+									'protocolVersion':ko.observable('3.1'),
 									'warnPrinting':ko.observable(false),
 									'gcodeEnabled':ko.observable(false),
 									'gcodeOnDelay':ko.observable(0),

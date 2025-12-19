@@ -11,7 +11,7 @@ import re
 import threading
 import time
 
-from octoprint_tuyasmartplug.utils import pytuya
+import tinytuya
 
 
 class tuyasmartplugPlugin(
@@ -71,6 +71,7 @@ class tuyasmartplugPlugin(
                     "warnPrinting": False,
                     "gcodeEnabled": False,
                     "v33": False,
+                    "protocolVersion": "3.1",
                     "gcodeOnDelay": 0,
                     "gcodeOffDelay": 0,
                     "autoConnect": True,
@@ -269,9 +270,12 @@ class tuyasmartplugPlugin(
         plug = self.plug_search(
             self._settings.get(["arrSmartplugs"]), "label", pluglabel
         )
-        device = pytuya.OutletDevice(plug["id"], plug["ip"], plug["localKey"])
-        if plug.get("v33"):
-            device.version = 3.3
+        device = tinytuya.OutletDevice(plug["id"], plug["ip"], plug["localKey"])
+        # Support new protocolVersion setting, fall back to v33 boolean for backwards compatibility
+        if plug.get("protocolVersion"):
+            device.set_version(float(plug["protocolVersion"]))
+        elif plug.get("v33"):
+            device.set_version(3.3)
 
         commands = {
             "info": ("status", None),
