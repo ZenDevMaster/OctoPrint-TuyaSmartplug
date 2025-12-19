@@ -17,6 +17,13 @@ $(function() {
 		self.processing = ko.observableArray([]);
 
 		self.onBeforeBinding = function() {
+			// Migrate existing plugs to add protocolVersion if missing
+			ko.utils.arrayForEach(self.settings.settings.plugins.tuyasmartplug.arrSmartplugs(), function(plug) {
+				if (typeof plug.protocolVersion === 'undefined') {
+					// Add protocolVersion observable, default based on v33 setting
+					plug.protocolVersion = ko.observable(plug.v33 && plug.v33() ? '3.3' : '3.1');
+				}
+			});
 			self.arrSmartplugs(self.settings.settings.plugins.tuyasmartplug.arrSmartplugs());
         }
 
