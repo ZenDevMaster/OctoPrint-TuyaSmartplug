@@ -14,20 +14,20 @@ plugin_package = "octoprint_tuyasmartplug"
 plugin_name = "OctoPrint-TuyaSmartplug"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "0.3.2"
+plugin_version = "0.3.2a"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """Simple plugin to control Tuya-based Smartplug"""
+plugin_description = """Simple plugin to control Tuya-based Smartplug (with protocol 3.4/3.5 support)"""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
-plugin_author = "ziirish"
+plugin_author = "ZenDevMaster"
 
 # The plugin's author's mail address.
-plugin_author_email = "ziirish+github@ziirish.info"
+plugin_author_email = ""
 
 # The plugin's homepage URL. Can be overwritten within OctoPrint's internal data via __plugin_url__ in the plugin module
-plugin_url = "https://github.com/ziirish/OctoPrint-TuyaSmartplug"
+plugin_url = "https://github.com/ZenDevMaster/OctoPrint-TuyaSmartplug"
 
 # The plugin's license. Can be overwritten within OctoPrint's internal data via __plugin_license__ in the plugin module
 plugin_license = "AGPLv3"
