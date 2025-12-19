@@ -1,39 +1,73 @@
 # OctoPrint-TuyaSmartplug
 
-Work based on [OctoPrint-TPLinkSmartplug](https://github.com/jneilliii/OctoPrint-TPLinkSmartplug) and [python-tuya](https://github.com/clach04/python-tuya).
+Control [Tuya-based](https://en.tuya.com/) smart plugs directly from the OctoPrint web interface or through GCODE commands.
 
-With this plugin you'll be able to control [Tuya-based](https://en.tuya.com/) SmartPlugs either directly from Octoprint Web interface or through GCODE commands<br>
-<br>
+This fork adds support for **Tuya protocol versions 3.4 and 3.5** by replacing the bundled pytuya library with [TinyTuya](https://github.com/jasonacox/tinytuya).
+
+## Acknowledgments
+
+This plugin stands on the shoulders of giants:
+
+- [jneilliii](https://github.com/jneilliii) - Original author of [OctoPrint-TPLinkSmartplug](https://github.com/jneilliii/OctoPrint-TPLinkSmartplug), which forms the foundation of this plugin's code
+- [ziirish](https://github.com/ziirish) - Maintained the [OctoPrint-TuyaSmartplug](https://github.com/ziirish/OctoPrint-TuyaSmartplug) fork
+- [clach04](https://github.com/clach04) - Created [python-tuya](https://github.com/clach04/python-tuya)
+- [jasonacox](https://github.com/jasonacox) - Creator of [TinyTuya](https://github.com/jasonacox/tinytuya), which powers this fork's modern protocol support
 
 ## Disclaimer
 
-Tuya is by far the most difficult IoT plataform that can be used to control devices by third-part software like this plugin, they require very specific information on the devices and change often their IoT Cloud Service.<br>
-Many user have given up on using Tuya devices with OctoPrint because of its difficulty, some changed to other brands, other dug deeper and changed the device firmware or completely changed the device microcontroler, literally soldering a new one.<br>
-If you, like me, only have Tuya devices and doesn't feel confortable on doing firmware flashes or resoldering, this plugin has a place on your OctoPrint instalation and its worth of your time configuring it. <br><br>
-This plugin still needs improvements on the code itself, UI, performance and other elements, so you are more then welcome to open [PullRequests](https://github.com/andrelucca/OctoTuya-SmartPlug/pulls) with code updates/fixes or [Issues](https://github.com/andrelucca/OctoTuya-SmartPlug/issues) regarding what needs to be fixed. <br>
-This is of course a side project of mine that unites two subjects that I like, so if you open a PR, Issue or a Discussion topic I'll answer as soon as I can, don't be angry if it takes more time than you think it should :). 
+**This plugin is provided as-is, without active development or support.** We created this fork to add protocol 3.4/3.5 support for our own use. The community is welcome to use it, fork it, or submit pull requests, but please understand that responses may be slow or non-existent.
 
-## How it was tested?
+**Use at your own risk.** Controlling your 3D printer's power supply remotely carries inherent risks:
 
-I tested all the plugin features using my Ender 3 V2 (Using original Marlin as Firmware that I configured and compiled) connected to the Octoprint v1.8.7. The Raspberry of my Octoprint is connected on the PSU of the printer, so if I power of the printer using the Tuya outlet it will also power-off the Raspberry (and will do it unsafely if I hadn't shutdown the Pi OS properly).
+- Cutting power during a print can damage your printer or cause fires
+- Unexpected power cycles can corrupt SD cards or damage electronics
+- You are solely responsible for any damage to your equipment, property, or person
 
-## Setup
+Always ensure your printer is in a safe state before toggling power remotely.
 
-Install via the bundled [Plugin Manager](https://github.com/foosel/OctoPrint/wiki/Plugin:-Plugin-Manager)
-or manually using this URL:
+## Installation
 
-    https://github.com/ziirish/OctoPrint-TuyaSmartplug/archive/main.zip
+Install via OctoPrint's Plugin Manager using this URL:
 
-## Preparatory Work
+```
+https://github.com/ZenDevMaster/OctoPrint-TuyaSmartplug/archive/refs/heads/master.zip
+```
 
-All Tuya devices requires 2 infos in order to be controled by other software: `Device ID` and `Local Key`<br>
-And this is were the greater difficulty takes place. I made a full guide on how obtain this info in this project [Wiki](https://github.com/ziirish/OctoPrint-TuyaSmartplug/wiki) so make sure you follow it and have this infos before installing an using this plugin.
+Or install manually via pip:
 
-## Configuration and Settings
+```bash
+pip install git+https://github.com/ZenDevMaster/OctoPrint-TuyaSmartplug.git
+```
 
-All details on how to configure the plugin and how to change its settings according to your liking are in this project [Wiki](https://github.com/ziirish/OctoPrint-TuyaSmartplug/wiki)
+## Getting Your Device ID and Local Key
 
-## Support jneilliii Efforts
-Most of the code used in this plugin has been written by
-[jneilliii](https://github.com/jneilliii) so if you want to support someone,
-you can support his work.
+This plugin requires your Tuya device's **Device ID**, **IP Address**, and **Local Key** to communicate with your smart plug.
+
+The easiest way to obtain these is using the [TinyTuya](https://github.com/jasonacox/tinytuya) setup wizard:
+
+1. Install TinyTuya: `pip install tinytuya`
+2. Run the wizard: `python -m tinytuya wizard`
+3. Follow the instructions to link your Tuya developer account
+4. The wizard will generate a `devices.json` file with all your device information
+
+For detailed instructions, see the [TinyTuya Setup Guide](https://github.com/jasonacox/tinytuya#setup-wizard---getting-local-keys).
+
+## Configuration
+
+1. Go to **Settings** > **Tuya Smartplug** in OctoPrint
+2. Click the **+** button to add a new plug
+3. Enter your device's:
+   - **IP Address** - Local IP of your smart plug
+   - **Device ID** - From TinyTuya wizard
+   - **Local Key** - From TinyTuya wizard
+   - **Protocol Version** - Select 3.1, 3.3, 3.4, or 3.5 (most newer devices use 3.4 or 3.5)
+4. Configure additional options as desired (auto-connect, warnings, etc.)
+
+## Protocol Version
+
+If you're unsure which protocol version your device uses, check the `devices.json` or `snapshot.json` file generated by the TinyTuya wizard - it includes the version for each device.
+
+- **3.1** - Older devices
+- **3.3** - Common for devices from 2019-2021
+- **3.4** - Newer devices (2022+)
+- **3.5** - Latest devices (2023+)
